@@ -84,5 +84,5 @@ EDA · Prueba t de Student · Prueba de Levene
 
 ## 🔗 Recursos
 
-- 📓 [Notebook completo](notebooks/analisis-videojuegos.ipynb){target="_blank"}
+- 📓 [Notebook completo en GitHub](https://github.com/andagui-ds/videogames-regional-sales-analysis/blob/main/notebooks/analisis-videojuegos.ipynb){target="_blank"}
 - 💻 [Repositorio en GitHub](https://github.com/andagui-ds/videogames-regional-sales-analysis){target="_blank"}
