@@ -1,3 +1,10 @@
+---
+title: "Análisis y Dashboard de Ventas Globales de Videojuegos"
+subtitle: "Análisis Exploratorio de Datos y Aplicación Web en Streamlit"
+description: "Evaluación del impacto de las reseñas de críticos y usuarios en las ventas regionales por plataforma y género, desplegado como un dashboard interactivo."
+categories: [EDA, Streamlit, Visualización de Datos, Python, Render]
+---
+
 # 🎮 Estrategia comercial 2017: Análisis regional de ventas de videojuegos
 
 **Problema de negocio:** La tienda de videojuegos "Store 1" necesita identificar patrones en los datos históricos de ventas para planificar sus campañas publicitarias para el año 2017. El desafío radica en que el éxito de un videojuego varía drásticamente según la región (Norteamérica, Europa y Japón) y la plataforma.
