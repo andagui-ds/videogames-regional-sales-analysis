@@ -1,0 +1,88 @@
+---
+title: "Análisis de Ventas de Videojuegos: Estrategia Regional para 2017"
+subtitle: "EDA y pruebas de hipótesis para identificar patrones de éxito comercial"
+format:
+  html:
+    page-layout: article
+---
+
+## 🎯 El Problema de Negocio
+
+La tienda de videojuegos **Streamchik** (Ice) necesita identificar qué hace que un videojuego tenga éxito comercial para planificar sus campañas de marketing y publicidad de cara a 2017.
+
+El análisis debe responder a tres preguntas clave:
+1. ¿Qué plataformas y géneros dominan el mercado actual?
+2. ¿Existen diferencias significativas en las preferencias de los usuarios entre Norteamérica (NA), Europa (EU) y Japón (JP)?
+3. ¿Las reseñas de los usuarios y críticos afectan de la misma manera a las ventas en todas las plataformas?
+
+## 📊 Datos y Preprocesamiento
+
+- **Fuente:** `games.csv` (16,713 registros y 11 columnas).
+- **Limpieza:**
+  - Reemplazo de valores `TBD` (*To Be Determined*) por nulos (`NaN`).
+  - Imputación de años faltantes (`year_of_release`) cruzando información de otras plataformas.
+  - Relleno de clasificaciones ESRB nulas con `"Unknown"`.
+  - Cálculo de la columna `total_sales`.
+- **Filtrado Temporal:** Se determinó que los datos anteriores a 2013-2014 no son representativos para predecir 2017. El análisis final se centró en la era reciente (2013-2016).
+
+## 🧠 Hallazgos Clave (EDA)
+
+1. **Ciclo de Vida de las Plataformas:** Las consolas suelen tener una vida útil de 5 a 7 años. Las plataformas líderes históricas (PS2, Xbox 360) han sido desplazadas por la octava generación.
+2. **Líderes Recientes (2013-2016):** **PS4** y **Xbox One (XOne)** dominan abrumadoramente el volumen de ventas en la era actual.
+3. **Impacto de las Reseñas (Caso PS4):**
+   - Las reseñas de **Críticos** tienen una correlación positiva moderada con las ventas (`0.40`).
+   - Las reseñas de **Usuarios** tienen una correlación prácticamente nula (`-0.04`), indicando que los usuarios califican por motivaciones emocionales y no necesariamente predicen el éxito comercial.
+
+## 📈 Perfiles Regionales
+
+Se identificaron diferencias críticas en el comportamiento del consumidor por región:
+
+- **Norteamérica (NA) y Europa (EU):** Las plataformas dominantes son PS4 y XOne. Los géneros favoritos son **Action** y **Shooter** (disparos). Las clasificaciones ESRB más populares son "M" (Maduro) y "E" (Todos).
+- **Japón (JP):** El mercado es completamente distinto. La plataforma líder es la portátil **Nintendo 3DS**. El género dominante es **Role-Playing (RPG)**. La clasificación ESRB casi no tiene relevancia en Japón (la mayoría son "Unknown").
+
+## 🔬 Pruebas de Hipótesis Estadísticas (Alpha = 0.05)
+
+Se utilizó la **prueba t de Student para muestras independientes** (con `equal_var=False` / Prueba de Welch, tras validar varianzas desiguales con la prueba de Levene).
+
+* **Hipótesis 1:** "Las calificaciones promedio de los usuarios para Xbox One y PC son las mismas".
+  * *Resultado:* No se rechaza la Hipótesis Nula. Estadísticamente, las calificaciones son iguales.
+* **Hipótesis 2:** "Las calificaciones promedio de los usuarios para los géneros de Acción y Deportes son diferentes".
+  * *Resultado:* Se rechaza la Hipótesis Nula. Existe una diferencia estadísticamente significativa en la percepción de los jugadores hacia estos dos géneros.
+
+## ✅ Recomendaciones de Negocio (Campaña 2017)
+
+1. **Priorizar PS4 y Xbox One:** El presupuesto de marketing debe enfocarse en estas plataformas de octava generación.
+2. **Estrategia Glocal (Global + Local):**
+   - En **NA y EU**: Invertir fuertemente en campañas para juegos *AAA* de Acción, Shooters y Deportes.
+   - En **Japón**: Desarrollar una estrategia paralela enfocada en consolas portátiles (Nintendo) y juegos de rol (RPG).
+3. **No depender del *User Score*:** Para predecir ventas, enfocar los esfuerzos de marketing en obtener buenas reseñas de la prensa especializada (Critics), que demostraron una mejor correlación con el éxito financiero.
+
+## 🛠️ Stack Técnico
+
+::: {.grid}
+::: {.g-col-6 .g-col-md-3}
+**Lenguajes**
+
+Python
+:::
+::: {.g-col-6 .g-col-md-3}
+**Análisis**
+
+Pandas · NumPy · SciPy (Stats)
+:::
+::: {.g-col-6 .g-col-md-3}
+**Visualización**
+
+Matplotlib · Seaborn
+:::
+::: {.g-col-6 .g-col-md-3}
+**Técnicas**
+
+EDA · Prueba t de Student · Prueba de Levene
+:::
+:::
+
+## 🔗 Recursos
+
+- 📓 [Notebook completo](notebooks/analisis-videojuegos.ipynb){target="_blank"}
+- 💻 [Repositorio en GitHub](https://github.com/andagui-ds/videogames-regional-sales-analysis){target="_blank"}

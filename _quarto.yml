@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Análisis de Ventas de Videojuegos"
+  description: "EDA y pruebas de hipótesis para la planificación de campañas regionales."
+  repo-url: https://github.com/andagui-ds/videogames-regional-sales-analysis
+  repo-actions: [edit, issue]
+  
+  page-footer:
+    left: |
+      © 2025 **Andrés Aguirre** · [Volver al portafolio](https://andagui-ds.github.io/portfolio/)
+    right: |
+      [GitHub](https://github.com/andagui-ds/videogames-regional-sales-analysis)
+
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "🔍 Ver código Python"
+    fig-cap-location: bottom
+    tbl-cap-location: top
+    back-to-top-navigation: true
