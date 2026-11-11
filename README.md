@@ -1,49 +1,62 @@
----
-title: "Análisis y Dashboard de Ventas Globales de Videojuegos"
-subtitle: "Análisis Exploratorio de Datos y Aplicación Web en Streamlit"
-description: "Evaluación del impacto de las reseñas de críticos y usuarios en las ventas regionales por plataforma y género, desplegado como un dashboard interactivo."
-categories: [EDA, Streamlit, Visualización de Datos, Python, Render]
----
+# 🎮 Análisis de Ventas de Videojuegos: Estrategia Regional para 2017
 
-# 🎮 Estrategia comercial 2017: Análisis regional de ventas de videojuegos
+> Análisis exploratorio de datos (EDA) y pruebas de hipótesis estadísticas para identificar los patrones de éxito de los videojuegos y planificar campañas comerciales regionales para el año 2017.
 
-**Problema de negocio:** La tienda de videojuegos "Store 1" necesita identificar patrones en los datos históricos de ventas para planificar sus campañas publicitarias para el año 2017. El desafío radica en que el éxito de un videojuego varía drásticamente según la región (Norteamérica, Europa y Japón) y la plataforma.
+## 🎯 Problema de Negocio
 
-**Objetivo:** Analizar el comportamiento del mercado, identificar plataformas y géneros líderes por región, y evaluar el impacto de las reseñas de usuarios y críticos en las ventas globales.
+La tienda de videojuegos **Streamchik** (Ice) necesita identificar qué hace que un videojuego tenga éxito comercial para planificar sus campañas de marketing y publicidad de cara a 2017. 
 
----
+El análisis debe responder a tres preguntas clave:
+1. ¿Qué plataformas y géneros dominan el mercado actual?
+2. ¿Existen diferencias significativas en las preferencias de los usuarios entre Norteamérica (NA), Europa (EU) y Japón (JP)?
+3. ¿Las reseñas de los usuarios y críticos afectan de la misma manera a las ventas en todas las plataformas?
 
-## 📊 Hallazgos Principales
+## 📊 Datos y Preprocesamiento
 
-- **Ciclo de vida de las consolas:** Las plataformas tienen una vida útil de aproximadamente 10 años. Para el modelo de 2017, solo se utilizaron datos del período reciente (2014-2016) para evitar sesgos de hardware obsoleto.
-- **Diferencias regionales clave:**
-  - **Norteamérica y Europa:** Mercados dominados por consolas de sobremesa (PS4, Xbox One). Los géneros más rentables son **Shooter** y **Action**.
-  - **Japón:** Un ecosistema totalmente distinto. Dominado por consolas portátiles (Nintendo 3DS) y el género **Role-Playing (RPG)**. Los juegos de acción occidentales tienen poca penetración.
-- **Impacto de las reseñas:** Las reseñas de la crítica profesional muestran una correlación positiva moderada (~0.40) con las ventas. Las reseñas de usuarios tienen una correlación casi nula, lo que sugiere que la opinión digital no dicta el éxito comercial masivo.
+- **Fuente:** `games.csv` (16,713 registros y 11 columnas).
+- **Limpieza:**
+  - Reemplazo de valores `TBD` (*To Be Determined*) en `user_score` por nulos (`NaN`) y conversión a tipo flotante.
+  - Imputación de años faltantes (`year_of_release`) cruzando información de otras plataformas para el mismo juego.
+  - Relleno de clasificaciones ESRB nulas con la categoría `"Unknown"`.
+  - Cálculo de la columna derivada `total_sales` (suma de ventas NA + EU + JP + Other).
+- **Filtrado Temporal:** Se determinó que los datos anteriores a 2013-2014 no son representativos para predecir 2017 (las consolas tienen un ciclo de vida de ~5 años). El análisis final se centró en la era reciente (2013-2016).
 
----
+## 🧠 Hallazgos Clave (EDA)
 
-## 🛠️ Metodología y Pruebas Estadísticas
+1. **Ciclo de Vida de las Plataformas:** Las consolas suelen tener una vida útil de 5 a 7 años. Las plataformas líderes históricas (PS2, Xbox 360) han sido desplazadas por la octava generación.
+2. **Líderes Recientes (2013-2016):** **PS4** y **Xbox One (XOne)** dominan abrumadoramente el volumen de ventas en la era actual.
+3. **Impacto de las Reseñas (Caso PS4):**
+   - Las reseñas de **Críticos** tienen una correlación positiva moderada con las ventas (`0.40`).
+   - Las reseñas de **Usuarios** tienen una correlación prácticamente nula (`-0.04`), indicando que los usuarios califican por motivaciones emocionales y no necesariamente predicen el éxito comercial.
 
-1. **Limpieza y preparación:** Manejo de valores nulos en `year_of_release`, `critic_score` y `user_score` (incluyendo el string `'tbd'`). Cálculo de las ventas totales globales.
-2. **Filtrado temporal:** Selección de datos a partir de 2014 para capturar la octava generación de consolas.
-3. **EDA y Visualización:** Distribución de ventas por plataforma, análisis de ventas por género y perfilado regional (NA, EU, JP).
-4. **Pruebas de hipótesis:** 
-   - *H0:* Las calificaciones promedio de los usuarios en Xbox One y PC son iguales.
-   - *H0:* Las calificaciones promedio de los usuarios en los géneros de Acción y Deportes son iguales.
-   *(Ambas pruebas evaluadas con un nivel de significancia α = 0.05).*
+## 📈 Perfiles Regionales
 
----
+Se identificaron diferencias críticas en el comportamiento del consumidor por región:
 
-## 📁 Contenido del repositorio
+- **Norteamérica (NA) y Europa (EU):** Las plataformas dominantes son PS4 y XOne. Los géneros favoritos son **Action** y **Shooter** (disparos). Las clasificaciones ESRB más populares son "M" (Maduro) y "E" (Todos).
+- **Japón (JP):** El mercado es completamente distinto. La plataforma líder es la portátil **Nintendo 3DS**. El género dominante es **Role-Playing (RPG)**. La clasificación ESRB casi no tiene relevancia en Japón (la mayoría son "Unknown").
 
-- `notebooks/01-analisis-regional.ipynb`: Notebook con el EDA, gráficos y pruebas estadísticas.
-- `requirements.txt`: Dependencias del proyecto.
+## 🔬 Pruebas de Hipótesis Estadísticas (Alpha = 0.05)
 
----
+Se utilizó la **prueba t de Student para muestras independientes** (con `equal_var=False` / Prueba de Welch, tras validar varianzas desiguales con la prueba de Levene).
 
-## ▶️ Cómo ejecutar
+* **Hipótesis 1:** "Las calificaciones promedio de los usuarios para Xbox One y PC son las mismas".
+  * *Resultado:* No se rechaza la Hipótesis Nula. Estadísticamente, las calificaciones son iguales.
+* **Hipótesis 2:** "Las calificaciones promedio de los usuarios para los géneros de Acción y Deportes son diferentes".
+  * *Resultado:* Se rechaza la Hipótesis Nula. Existe una diferencia estadísticamente significativa en la percepción de los jugadores hacia estos dos géneros.
 
-```bash
-pip install -r requirements.txt
-jupyter notebook notebooks/01-analisis-regional.ipynb
+## ✅ Recomendaciones de Negocio (Campaña 2017)
+
+1. **Priorizar PS4 y Xbox One:** El presupuesto de marketing debe enfocarse en estas plataformas de octava generación.
+2. **Estrategia Glocal (Global + Local):**
+   - En **NA y EU**: Invertir fuertemente en campañas para juegos *AAA* de Acción, Shooters y Deportes.
+   - En **Japón**: Desarrollar una estrategia paralela enfocada en consolas portátiles (Nintendo) y juegos de rol (RPG).
+3. **No depender del *User Score*:** Para predecir ventas, enfocar los esfuerzos de marketing en obtener buenas reseñas de la prensa especializada (Critics), que demostraron una mejor correlación con el éxito financiero.
+
+## 🛠️ Stack Técnico
+- **Lenguajes:** Python
+- **Librerías:** Pandas, NumPy, SciPy (Stats), Matplotlib, Seaborn
+- **Técnicas:** EDA, Limpieza de datos, Análisis Multivariado, Prueba t de Student, Prueba de Levene.
+
+## 🔗 Ver el Análisis Completo
+- 📓 [Notebook original con todo el código y las gráficas](notebooks/analisis-videojuegos.ipynb)
