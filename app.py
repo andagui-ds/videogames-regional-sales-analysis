@@ -8,26 +8,28 @@ st.markdown("Explora las tendencias de ventas por región, género y plataforma.
 @st.cache_data
 def load_data():
     try:
-        # 1. Leer el CSV (agregamos encoding por si hay caracteres especiales)
+        # 1. Leer el CSV
         df = pd.read_csv('games.csv', encoding='latin-1')
         
-        # 2. Convertir todas las columnas a minúsculas
+        # 2. Convertir columnas a minúsculas
         df.columns = df.columns.str.lower()
         
-        # 3. Ahora sí, limpieza usando los nombres en minúscula
+        # 3. CREAR LA COLUMNA TOTAL_SALES (Esto era lo que faltaba)
+        df['total_sales'] = df['na_sales'] + df['eu_sales'] + df['jp_sales'] + df['other_sales']
+        
+        # 4. Limpieza
         df = df.dropna(subset=['year_of_release'])
         df['year_of_release'] = df['year_of_release'].astype(int)
         
         return df
     except Exception as e:
-        # Si hay un error, lo mostraremos en pantalla
         st.error(f"Error al leer el archivo: {e}")
         return pd.DataFrame()
 
 df = load_data()
 
 if not df.empty:
-    region = st.sidebar.selectbox("Selecciona la Región", ["na_sales", "eu_sales", "jp_sales", "total_sales"])
+    region = st.sidebar.selectbox("Selecciona la Región", ["total_sales", "na_sales", "eu_sales", "jp_sales"])
     año_min, año_max = st.sidebar.slider("Rango de Años", 1980, 2016, (2010, 2016))
     
     df_filtered = df[(df['year_of_release'] >= año_min) & (df['year_of_release'] <= año_max)]
